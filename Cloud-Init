@@ -12,9 +12,10 @@ groups:
 
 #Gebruikers aanmaken
 users:
+  - default
   - name: VIL
     ssh_authorized_keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDy4XCsWauBq68PlyxNaGmgN3Ot8vuWIAoeT8uTC4gfxDnBj0pCmlU4PfjNIXMescNlfVu9p5D5GHOzrJICnpgFXECv3ZPtkW/RFIb2wTZSvCHVQFRMoYCHa0DU+arQEKO6riwSXL4RKTCuUiDwUpQXv53p6xfx6kBpyV9wK5QmpWSKassdn1GDkTnLVi07ys2kOFp2GXP4EEGK/keX7Zo5IeoUwS9cDKyj5AP86ta8CD8lacsIVJK0K4VH0ckaR6ia/zuhMr+SDsiN8oV9+PIF0TlrP8Z4Qws8XDPsYkmDgWw6kt6OmFQoPUwK9SZUnFmgOOIiP9IkPX0pg0ZDthzhxTT33ss+TKrGsWurKPmBYGuBfTNNJGwRaiWYHZGxb5v+eRFGNMb5N90K/I42ruiZpNq7RNa2CAAy3kAJEOJKlwnp6vFzhpu4JYogJwjgiN0FgSIXsC6D5DGydn1Kn+khliRV8bPGKEKhiNkAow4B8djOwR4A6FrJDCukj6x6MDs=
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDy4XCsWauBq68PlyxNaGmgN3Ot8vuWIAoeT8uTC4gfxDnBj0pCmlU4PfjNIXMescNlfVu9p5D5GHOzrJICnpgFXECv3ZPtkW/RFIb2wTZSvCHVQFRMoYCHa0DU+arQEKO6riwSXL4RKTCuUiDwUpQXv53p6xfx6kBpyV9wK5QmpWSKassdn1GDkTnLVi07ys2kOFp2GXP4EEGK/keX7Zo5IeoUwS9cDKyj5AP86ta8CD8lacsIVJK0K4VH0ckaR6ia/zuhMr+SDsiN8oV9+PIF0TlrP8Z4Qws8XDPsYkmDgWw6kt6OmFQoPUwK9SZUnFmgOOIiP9IkPX0pg0ZDthzhxTT33ss+TKrGsWurKPmBYGuBfTNNJGwRaiWYHZGxb5v+eRFGNMb5N90K/I42ruiZpNq7RNa2CAAy3kAJEOJKlwnp6vFzhpu4JYogJwjgiN0FgSIXsC6D5DGydn1Kn+khliRV8bPGKEKhiNkAow4B8djOwR4A6FrJDCukj6x6MDs= sean@DESKTOP-1E2QJIT
     sudo: ['ALL=(ALL) NOPASSWD:ALL']
     groups: VirtualIoT, sudo
     shell: /bin/bash
@@ -61,5 +62,5 @@ write_files:
          AllowUsers VIL
 
 runcmd:
-  - git clone --branch Development https://github.com/SeanVisser1998/ZeroConfig-Secure-Channel.git && cd ZeroConfig-Secure-Channel && cd Peer && rm cloud-config && chmod +x csnn_peer.sh && ./csnn_peer.sh
+  - sudo git clone --branch Development https://github.com/SeanVisser1998/ZeroConfig-Secure-Channel.git && cd ZeroConfig-Secure-Channel && cd Peer && sudo rm cloud-config && sudo chmod +x csnn_peer.sh && sudo ./csnn_peer.sh
 
