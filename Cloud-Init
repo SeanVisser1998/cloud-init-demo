@@ -1,0 +1,65 @@
+#cloud-config
+#
+#	Sean Visser
+#	Cyber Security Noord-Nederland
+#	Inrichten van een Netbird peer op Ubuntu 20.04 met behulp van Cloud-Init
+#	V1.1: Environment variables 
+#
+
+#Groepen aanmaken voor cloud-init(VirtualIoT)
+groups:
+  - VirtualIoT
+
+#Gebruikers aanmaken
+users:
+  - name: VIL
+    ssh_authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDy4XCsWauBq68PlyxNaGmgN3Ot8vuWIAoeT8uTC4gfxDnBj0pCmlU4PfjNIXMescNlfVu9p5D5GHOzrJICnpgFXECv3ZPtkW/RFIb2wTZSvCHVQFRMoYCHa0DU+arQEKO6riwSXL4RKTCuUiDwUpQXv53p6xfx6kBpyV9wK5QmpWSKassdn1GDkTnLVi07ys2kOFp2GXP4EEGK/keX7Zo5IeoUwS9cDKyj5AP86ta8CD8lacsIVJK0K4VH0ckaR6ia/zuhMr+SDsiN8oV9+PIF0TlrP8Z4Qws8XDPsYkmDgWw6kt6OmFQoPUwK9SZUnFmgOOIiP9IkPX0pg0ZDthzhxTT33ss+TKrGsWurKPmBYGuBfTNNJGwRaiWYHZGxb5v+eRFGNMb5N90K/I42ruiZpNq7RNa2CAAy3kAJEOJKlwnp6vFzhpu4JYogJwjgiN0FgSIXsC6D5DGydn1Kn+khliRV8bPGKEKhiNkAow4B8djOwR4A6FrJDCukj6x6MDs=
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    groups: VirtualIoT, sudo
+    shell: /bin/bash
+
+#Env variables aanmaken voor gebruik in Netbird.sh (Netbird management server setup)
+write_files:
+- path: /etc/environment
+  content: |
+    NETBIRD_DOMAIN="csnn-demo-netbird.seanvisser.nl"
+    NETBIRD_PORT="33073"
+    NETBIRD_SETUP_KEY="644AE865-B559-43C3-B837-F0EA547E80AD"
+  append: true
+- path: /etc/ssh/sshd_config
+  content: |
+         Port 22
+         Protocol 2
+         HostKey /etc/ssh/ssh_host_rsa_key
+         HostKey /etc/ssh/ssh_host_dsa_key
+         HostKey /etc/ssh/ssh_host_ecdsa_key
+         HostKey /etc/ssh/ssh_host_ed25519_key
+         UsePrivilegeSeparation yes
+         KeyRegenerationInterval 3600
+         ServerKeyBits 2048
+         SyslogFacility AUTH
+         LogLevel INFO
+         LoginGraceTime 120
+         PermitRootLogin no
+         StrictModes yes
+         RSAAuthentication yes
+         PubkeyAuthentication yes
+         IgnoreRhosts yes
+         RhostsRSAAuthentication no
+         HostbasedAuthentication no
+         PermitEmptyPasswords no
+         ChallengeResponseAuthentication no
+         X11Forwarding yes
+         X11DisplayOffset 10
+         PrintMotd yes
+         PrintLastLog yes
+         TCPKeepAlive yes
+         AcceptEnv LANG LC_*
+         Subsystem sftp /usr/lib/openssh/sftp-server
+         UsePAM yes
+         AllowUsers VIL
+
+runcmd:
+  - git clone --branch Development https://github.com/SeanVisser1998/ZeroConfig-Secure-Channel.git && cd ZeroConfig-Secure-Channel && cd Peer && rm cloud-config && chmod +x csnn_peer.sh && ./csnn_peer.sh
+
